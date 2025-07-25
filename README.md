@@ -2,15 +2,15 @@ Here’s a **README** you can include at the top of your SQL project or Jupyter 
 
 ---
 
-# 📘 README — Zepto Product Dataset Analysis
+# README — Zepto Product Dataset Analysis
 
-## 🔍 Objective:
+##  Objective:
 
 The purpose of this project is to explore, clean, and analyze the `ZEPTO_V2` dataset to generate actionable insights related to product pricing, inventory, revenue, discounts, and stock status.
 
 ---
 
-## 📁 Sections Covered:
+## Sections Covered:
 
 ### 1. **Data Exploration**
 
@@ -39,41 +39,41 @@ The purpose of this project is to explore, clean, and analyze the `ZEPTO_V2` dat
 
 ### 3. **Data Analysis Queries**
 
-#### 🔟 Q1: Top 10 Best Value Products
+####  Q1: Top 10 Best Value Products
 
 * Sorted by highest discount percentage.
 
-#### 🛒 Q2: High MRP Products That Are Out of Stock
+####  Q2: High MRP Products That Are Out of Stock
 
 * MRP > ₹300 and `OUTOFSTOCK = 'true'`.
 
-#### 💰 Q3: Estimated Revenue Per Category
+####  Q3: Estimated Revenue Per Category
 
 * Revenue = `DiscountedSellingPrice * AvailableQuantity`.
 
-#### 📉 Q4: Products with High MRP and Low Discount
+####  Q4: Products with High MRP and Low Discount
 
 * MRP > ₹500 and Discount < 10%.
 
-#### 📦 Q5: Top 5 Categories by Average Discount
+####  Q5: Top 5 Categories by Average Discount
 
 * Categories offering best value via average discounts.
 
-#### ⚖️ Q6: Price per Gram for Products > 100g
+####  Q6: Price per Gram for Products > 100g
 
 * Sorted to find best value per gram.
 
-#### 🏷️ Q7: Weight-Based Product Grouping
+####  Q7: Weight-Based Product Grouping
 
 * Categorized into `LOW`, `MEDIUM`, `BULK` based on weight.
 
-#### 🏋️ Q8: Total Inventory Weight by Category
+####  Q8: Total Inventory Weight by Category
 
 * `weightInGms * availableQuantity` grouped by category.
 
 ---
 
-## ✅ Summary of Insights:
+##  Summary of Insights:
 
 * High discounts offer value to price-sensitive customers (Q1, Q5, Q6).
 * Some expensive products are out of stock, suggesting demand or supply chain issues (Q2).
