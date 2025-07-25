@@ -1,130 +1,97 @@
--- DATA EXPLORATION
-select* from zepto_v2;
+Here’s a **README** you can include at the top of your SQL project or Jupyter Notebook. It explains your work clearly and professionally:
 
--- count of rows
+---
 
-select count(*) from zepto_v2;
+# 📘 README — Zepto Product Dataset Analysis
 
--- SAMPLE DATA
-SELECT * FROM ZEPTO_V2
-LIMIT 10;
+## 🔍 Objective:
 
--- NULL VALUES
-SELECT * FROM ZEPTO_V2
-WHERE NAME IS NULL
-OR 
-MRP IS NULL
-OR
-CATEGORY IS NULL
-OR
-DISCOUNTPERCENT IS NULL
-OR
-AVAILABLEQUANTITY IS NULL
-OR 
-DISCOUNTEDSELLINGPRICE IS NULL
-OR
-WEIGHTINGMS IS NULL
-OR 
-QUANTITY IS NULL
-OR
-OUTOFSTOCK IS NULL;
+The purpose of this project is to explore, clean, and analyze the `ZEPTO_V2` dataset to generate actionable insights related to product pricing, inventory, revenue, discounts, and stock status.
 
--- DIFFERENT PRODUCT CATEGORIES
-SELECT DISTINCT CATEGORY
-FROM ZEPTO_V2
-ORDER BY CATEGORY;
+---
 
--- PRODUCT IN STOCK VS OUT OF STOCK
-SELECT OUTOFSTOCK,COUNT(TRUE)
-FROM ZEPTO_V2
-GROUP BY OUTOFSTOCK;
+## 📁 Sections Covered:
 
-SELECT* FROM ZEPTO_V2;
+### 1. **Data Exploration**
 
-SELECT 
-    ROW_NUMBER() OVER () AS serial_no,
-    NAME,CATEGORY,MRP,DISCOUNTPERCENT,AVAILABLEQUANTITY,DISCOUNTEDSELLINGPRICE,WEIGHTINGMS,QUANTITY,OUTOFSTOCK
-    
-FROM ZEPTO_V2;
+* View complete dataset:
+  `SELECT * FROM ZEPTO_V2;`
+* Total number of rows:
+  `SELECT COUNT(*) FROM ZEPTO_V2;`
+* Preview first 10 rows (sample data):
+  `SELECT * FROM ZEPTO_V2 LIMIT 10;`
+* Identify missing/null values:
+  Checks for `NULL` in all key columns like `name`, `MRP`, `discountPercent`, etc.
+* List of unique product categories:
+  `SELECT DISTINCT CATEGORY FROM ZEPTO_V2;`
+* Product availability (in stock vs out of stock):
+  Grouped count based on `OUTOFSTOCK` column.
 
--- PRODUCT NAMES PRESENT MULTIPLE TIMES
-SELECT NAME, COUNT(SERIAL_NO) AS "NUMBER OF SERIALS"
-FROM ZEPTO_V2
-GROUP BY NAME
-HAVING COUNT(SERIAL_NO)=15
-ORDER BY COUNT(SERIAL_NO) DESC;
+---
 
--- DATA CLEANING
+### 2. **Data Cleaning**
 
--- PRODUCTS WITH PRICE =0
-SELECT * FROM ZEPTO_V2
-WHERE MRP=0 OR DISCOUNTEDSELLINGPRICE=0;
+* Identified and removed products with `MRP` or `DiscountedSellingPrice` equal to 0.
+* Converted price data from **paise to rupees** for accurate calculations.
+* Checked for products with same name appearing multiple times (potential duplicates).
 
-DELETE FROM ZEPTO_V2
-WHERE mrp = 0;
+---
 
--- convert paise to rupees
+### 3. **Data Analysis Queries**
 
-UPDATE ZEPTO_V2
-SET MRP=MRP/100.0,
-DISCOUNTEDSELLINGPRICE= DISCOUNTEDSELLINGPRICE/100.0;
+#### 🔟 Q1: Top 10 Best Value Products
 
-SELECT MRP,DISCOUNTEDSELLINGPRICE FROM ZEPTO_V2;
+* Sorted by highest discount percentage.
 
--- Q1- FIND THE TOP 10 BEST VALUE PRODUCTS BASED ON THE DISCOUNT PERCENATAGE?
-SELECT DISTINCT name, MRP, discountPercent
-FROM ZEPTO_V2
-ORDER BY discountPercent DESC
-LIMIT 10;
+#### 🛒 Q2: High MRP Products That Are Out of Stock
 
--- Q2 WHAT ARE THE PRODUCTS WITH HIGH MRP BUT OUT OF STOCK
-SELECT DISTINCT NAME,MRP
-FROM ZEPTO_V2
-WHERE MRP > 300 AND OUTOFSTOCK= 'true'
-ORDER BY MRP DESC;
+* MRP > ₹300 and `OUTOFSTOCK = 'true'`.
 
--- Q3 CALCULATE THE ESTIMATED REVENUE FOR EACH CATEGORY?
-SELECT CATEGORY,
-SUM(DISCOUNTEDSELLINGPRICE * AVAILABLEQUANTITY) AS TOTAL_REVENUE
-FROM ZEPTO_V2
-GROUP BY CATEGORY
-ORDER BY TOTAL_REVENUE;
+#### 💰 Q3: Estimated Revenue Per Category
 
--- Q4 FIND ALL THE PRODUCT WHERE MRP IS GREATER THSN 500 AND DISCOUNT IS LESS THAN 10%
-SELECT DISTINCT NAME,MRP,DISCOUNTPERCENT
-FROM ZEPTO_V2
-WHERE MRP > 500 AND DISCOUNTPERCENT < 10
-ORDER BY MRP DESC , DISCOUNTPERCENT DESC;
+* Revenue = `DiscountedSellingPrice * AvailableQuantity`.
 
--- Q5 IDENTIFY THE TOP 5 CATEGORIES OFFERING THE HIGHEST AVERAGE DISCOUNT PERCENTAGE?
-SELECT CATEGORY,
-ROUND(AVG(DISCOUNTPERCENT),2) AS AVG_DISCOUNT
-FROM ZEPTO_V2
-GROUP BY CATEGORY
-ORDER BY AVG_DISCOUNT DESC
-LIMIT 5;
+#### 📉 Q4: Products with High MRP and Low Discount
 
--- Q6 FIND THE PRICE PER GRAM FOR PRODUCTS ABOVE 100G AND SORT BY BEST VALUE?
-SELECT distinct NAME, discountedsellingprice, weightInGms,
-ROUND(DISCOUNTEDSELLINGPRICE / weightInGms,2) AS PRICE_PER_GRAMS
-FROM ZEPTO_V2
-WHERE weightInGms >=100 
-ORDER BY PRICE_PER_GRAMS;
+* MRP > ₹500 and Discount < 10%.
 
--- Q7 GROUP THE PRODUCTS INTO CATEGORIES LIKE LOW , MEDUM, BULK.
-SELECT DISTINCT NAME, weightInGms,
-CASE WHEN weightInGms < 1000 THEN 'LOW'
-     WHEN weightInGms < 5000 THEN 'MEDIUM'
-     ELSE 'BULK'
-     END AS weight_category
-FROM ZEPTO_V2;
+#### 📦 Q5: Top 5 Categories by Average Discount
 
--- Q8 WHAT IS THE TOTAL INVENTORY WEIGHT PER CATEGORY?
-SELECT CATEGORY,
-SUM(weightInGms* availablequantity) AS TOTAL_WEIGHT
-FROM ZEPTO_V2
-GROUP BY CATEGORY
-ORDER BY TOTAL_WEIGHT;
+* Categories offering best value via average discounts.
+
+#### ⚖️ Q6: Price per Gram for Products > 100g
+
+* Sorted to find best value per gram.
+
+#### 🏷️ Q7: Weight-Based Product Grouping
+
+* Categorized into `LOW`, `MEDIUM`, `BULK` based on weight.
+
+#### 🏋️ Q8: Total Inventory Weight by Category
+
+* `weightInGms * availableQuantity` grouped by category.
+
+---
+
+## ✅ Summary of Insights:
+
+* High discounts offer value to price-sensitive customers (Q1, Q5, Q6).
+* Some expensive products are out of stock, suggesting demand or supply chain issues (Q2).
+* Certain categories drive higher revenue and inventory load (Q3, Q8).
+* Weight and pricing patterns help in planning logistics and pricing strategy (Q4, Q6, Q7).
+
+---
+
+## 📌 Notes:
+
+* Ensure to run **data cleaning steps** before analysis.
+* Consider indexing or optimizing queries for large datasets.
+* Handle repeated product names cautiously during aggregation.
+
+---
+
+Let me know if you'd like this as a downloadable `.md` or `.txt` file too!
+
 
 
 
