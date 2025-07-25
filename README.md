@@ -82,7 +82,7 @@ The purpose of this project is to explore, clean, and analyze the `ZEPTO_V2` dat
 
 ---
 
-## 📌 Notes:
+## Notes:
 
 * Ensure to run **data cleaning steps** before analysis.
 * Consider indexing or optimizing queries for large datasets.
@@ -90,7 +90,7 @@ The purpose of this project is to explore, clean, and analyze the `ZEPTO_V2` dat
 
 ---
 
-Let me know if you'd like this as a downloadable `.md` or `.txt` file too!
+
 
 
 
